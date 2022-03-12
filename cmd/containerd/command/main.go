@@ -322,7 +322,11 @@ func applyFlags(context *cli.Context, config *srvconfig.Config) error {
 		},
 	} {
 		if s := context.GlobalString(v.name); s != "" {
-			*v.d = s
+			absPath, err := filepath.Abs(s)
+			if err != nil {
+				return err
+			}
+			*v.d = absPath
 		}
 	}
 
